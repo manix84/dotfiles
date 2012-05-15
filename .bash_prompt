@@ -126,6 +126,27 @@ function set_git_branch {
 # Determine the branch information for this subversion repository. No support
 # for svn status, since that needs to hit the remote repository.
 function set_svn_branch {
+
+    # # Capture the output of the "svn status" command.
+    # svn_status="$(svn status -u 2> /dev/null)"
+
+    # # Set color based on clean/staged/dirty.
+    # if [[ ${svn_status} =~ "  * " && ${svn_status} != "M  " ]]; then
+    #     remote="↕"
+    # elif [[ ${svn_status} !=~ "M" ]]; then
+    #     state="${YELLOW}"
+    #     remote="↑"
+    # elif [[ ${svn_status} !=~ "  * " ]]; then
+    #     state="${YELLOW}"
+    #     remote="↓"
+    # elif [[ ${svn_status} =~ "C  " ]]; then
+    #     state="${RED}"
+    #     remote="!"
+    # else
+    #     remote=""
+    #     state="${GREEN}"
+    # fi
+
     # Capture the output of the "git status" command.
     svn_info="$(svn info | egrep '^URL: ' 2> /dev/null)"
 
@@ -141,6 +162,7 @@ function set_svn_branch {
     fi
 
     # Set the final branch string.
+    # BRANCH="${state}(${branch})${remote}${RESET} "
     BRANCH="${state}(${branch})${RESET} "
 }
 
