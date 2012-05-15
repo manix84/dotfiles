@@ -134,12 +134,14 @@ function set_svn_branch {
     trunk_pattern="^URL: .*/trunk(/.*)?$"
     if [[ ${svn_info} =~ $branch_pattern ]]; then
         branch=${BASH_REMATCH[2]}
+        state=${YELLOW}
     elif [[ ${svn_info} =~ $trunk_pattern ]]; then
         branch='trunk'
+        state=${GREEN}
     fi
 
     # Set the final branch string.
-    BRANCH="(${branch}) "
+    BRANCH="${state}(${branch})${RESET} "
 }
 
 # Return the prompt symbol to use, colorized based on the return value of the
