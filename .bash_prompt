@@ -18,7 +18,7 @@
 #   root @ server in ~/projects/dotfiles/ (master)↑
 #   $
 #
-#   {BOLD}{MAGENTA}root{WHITE} @ {ORANGE}server{WHITE} in {GREEN}~/projects/dotfiles/{WHITE} {PURPLE}(master)↑
+#   {BOLD}{RED}root{WHITE} @ {ORANGE}server{WHITE} in {PURPLE}~/projects/dotfiles {RED|YELLOW|GREEN} (master)↑
 #   {RESET}$
 #
 # AUTHOR:
