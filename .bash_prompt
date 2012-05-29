@@ -126,37 +126,26 @@ function set_git_branch {
 # Determine the branch information for this subversion repository. No support
 # for svn status, since that needs to hit the remote repository.
 function set_svn_branch {
-
-    # # Capture the output of the "svn status" command.
-    # svn_status="$(svn status -u 2> /dev/null)"
-
     # svn_base_rev="$(svn info | grep -i 'Last Changed Rev')"
     # svn_head_rev="$(svn info -r HEAD | grep -i 'Last Changed Rev')"
 
-    # # Set color based on clean/staged/dirty.
-    # if [[ ${svn_base_rev} != ${svn_head_rev} ]]; then
-    #     state="${YELLOW}"
-    #     remote="↓"
-    # else
-    #     remote=""
-    # fi
-    # if [[ ${svn_status} !=~ "M  " ]]; then
-    #     remote="↕"
-    # elif [[ ${svn_status} !=~ "M" ]]; then
-    #     state="${YELLOW}"
-    #     remote="↑"
-    # elif [[ ${svn_status} !=~ "  * " ]]; then
-    #     state="${YELLOW}"
-    #     remote="↓"
-    # elif [[ ${svn_status} =~ "C  " ]]; then
-    #     state="${RED}"
-    #     remote="!"
-    # else
-    #     remote=""
-    #     state="${GREEN}"
-    # fi
+    # # Set color based on clean/dirty.
+    state="${GREEN}"
+    remote=""
 
-    # Capture the output of the "git status" command.
+    svn_status=$(svn status | grep -oP '^([\?\*\!CMAD]{0,6})' 2> /dev/null)
+
+    if [[ ${svn_status} ]]; then
+        remote=" [${svn_status/$'\n'/,}]"
+        if [[ ${svn_status} =~ (\!|C) ]]; then
+            state="${RED}"
+        elif [[ ${svn_status} =~ (\*|M|A|D) ]]; then
+            state="${YELLOW}"
+        elif [[ ${svn_status} =~ (\?|I) ]]; then
+            state="${GREEN}"
+        fi
+    fi
+
     svn_info="$(svn info | egrep '^URL: ' 2> /dev/null)"
 
     # Get the name of the branch.
@@ -164,15 +153,14 @@ function set_svn_branch {
     trunk_pattern="^URL: .*/trunk(/.*)?$"
     if [[ ${svn_info} =~ $branch_pattern ]]; then
         branch=${BASH_REMATCH[2]}
-        state=${YELLOW}
+        # state=${YELLOW}
     elif [[ ${svn_info} =~ $trunk_pattern ]]; then
         branch='trunk'
-        state=${GREEN}
+        # state=${GREEN}
     fi
 
     # Set the final branch string.
-    # BRANCH="${state}(${branch})${remote}${RESET} "
-    BRANCH="${state}${branch}${RESET} "
+    BRANCH="${state}${branch}${remote}${RESET} "
 }
 
 # Return the prompt symbol to use, colorized based on the return value of the
