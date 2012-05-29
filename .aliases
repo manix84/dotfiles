@@ -7,6 +7,7 @@ alias -- -="cd -"
 # Shortcuts
 alias d="cd ~/Dropbox"
 alias p="cd ~/Projects"
+alias w="cd ~/Workspace"
 alias g="git"
 alias v="vim"
 alias subl='open -a "Sublime Text 2"'
