@@ -133,10 +133,10 @@ function set_svn_branch {
     state="${GREEN}"
     remote=""
 
-    svn_status=$(svn status | grep -oP '^([\?\*\!CMAD]{0,6})' 2> /dev/null)
+    svn_status=$(svn status | grep -oP '^([\?\*\!CMAD]{0,6})' | uniq | tr -d '\n' 2> /dev/null)
 
-    if [[ ${svn_status} ]]; then
-        remote=" [${svn_status/$'\n'/,}]"
+    if [[ ${svn_status/$'\n|\r|\r\n'/,} ]]; then
+        remote=" [${svn_status}]"
         if [[ ${svn_status} =~ (\!|C) ]]; then
             state="${RED}"
         elif [[ ${svn_status} =~ (\*|M|A|D) ]]; then
