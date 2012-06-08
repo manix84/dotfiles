@@ -13,12 +13,20 @@
 #   2. Add the following line to the end of your ~/.profile or ~/.bash_profile:
 #        . ~/.bash_prompt
 #
-# EXAMPLE:
+# EXAMPLE 1:
 #
-#   root @ server in ~/projects/dotfiles/ (master)↑
+#   root @ server in ~/projects/dotfiles/ on master [↑]
 #   $
 #
-#   {BOLD}{RED}root{WHITE} @ {ORANGE}server{WHITE} in {PURPLE}~/projects/dotfiles {RED|YELLOW|GREEN} (master)↑
+#   {BOLD}{RED}root{WHITE} @ {ORANGE}server{WHITE} in {PURPLE}~/projects/dotfiles {WHITE} on {RED|YELLOW|GREEN} master [↑]
+#   {RESET}$
+#
+# EXAMPLE 2:
+#
+#   root @ server in ~/projects
+#   $
+#
+#   {BOLD}{RED}root{WHITE} @ {ORANGE}server{WHITE} in {PURPLE}~/projects
 #   {RESET}$
 #
 # AUTHOR:
@@ -120,7 +128,7 @@ function set_git_branch {
     fi
 
     # Set the final branch string.
-    BRANCH="${state}${branch}${remote}${RESET} "
+    BRANCH="${WHITE}on ${state}${branch}${remote}${RESET} "
 }
 
 # Determine the branch information for this subversion repository. No support
@@ -133,7 +141,7 @@ function set_svn_branch {
     state="${GREEN}"
     remote=""
 
-    svn_status=$(svn status | grep -oP '^([\?\*\!CMAD]{0,6})' | uniq | tr -d '\n' 2> /dev/null)
+    svn_status=$(svn status | grep -oP '^([\?\*\!CMAD]{0,6})' | sort | uniq | tr -d '\n' 2> /dev/null)
 
     if [[ ${svn_status} ]]; then
         remote=" [${svn_status}]"
@@ -160,7 +168,7 @@ function set_svn_branch {
     fi
 
     # Set the final branch string.
-    BRANCH="${state}${branch}${remote}${RESET} "
+    BRANCH="${WHITE}on ${state}${branch}${remote}${RESET} "
 }
 
 # Return the prompt symbol to use, colorized based on the return value of the
