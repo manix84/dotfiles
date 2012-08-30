@@ -42,6 +42,20 @@ elif infocmp xterm-256color >/dev/null 2>&1; then
     export TERM=xterm-256color
 fi
 
+if svn --version >/dev/null 2>&1; then
+    export SVN_INSTALLED = true
+    echo "SVN INSTALLED"
+elif
+    export SVN_INSTALLED = false
+fi
+
+if git --version >/dev/null 2>&1; then
+    export GIT_INSTALLED = true
+    echo "GIT INSTALLED"
+elif
+    export GIT_INSTALLED = false
+fi
+
 if tput setaf 1 &> /dev/null; then
     tput sgr0
     if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then

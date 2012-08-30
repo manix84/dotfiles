@@ -188,6 +188,9 @@ chflags nohidden ~/Library
 echo "Disable local Time Machine backups"
 hash tmutil &> /dev/null && sudo tmutil disablelocal
 
+echo "Disable Mission Control"
+defaults write com.apple.dashboard mcx-disabled -bool true
+
 # echo "Remove Dropbox’s green checkmark icons in Finder"
 # file=/Applications/Dropbox.app/Contents/Resources/check.icns
 # [ -e "$file" ] && mv -f "$file" "$file.bak"
