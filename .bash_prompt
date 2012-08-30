@@ -42,18 +42,20 @@ elif infocmp xterm-256color >/dev/null 2>&1; then
     export TERM=xterm-256color
 fi
 
-if svn --version >/dev/null 2>&1; then
-    export SVN_INSTALLED = true
-    echo "SVN INSTALLED"
-elif
-    export SVN_INSTALLED = false
+if [[ "$(svn --version &> /dev/null)" =~ "^svn, version ([\d].[\d].[\d])" ]]; then
+    export SVN_VERSION=${BASH_REMATCH[1]}
+    echo "SVN INSTALLED: ${SVN_VERSION}"
+else
+    export SVN_VERSION=false
+    echo "SVN NOT INSTALLED"
 fi
 
-if git --version >/dev/null 2>&1; then
-    export GIT_INSTALLED = true
-    echo "GIT INSTALLED"
-elif
-    export GIT_INSTALLED = false
+if [[ "$(git --version &> /dev/null)" =~ "^git version ([\d].[\d].[\d].[\d])" ]]; then
+    export GIT_VERSION=${BASH_REMATCH[1]}
+    echo "GIT INSTALLED: ${GIT_VERSION}"
+else
+    export GIT_VERSION=false
+    echo "GIT NOT INSTALLED"
 fi
 
 if tput setaf 1 &> /dev/null; then
