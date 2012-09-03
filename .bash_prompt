@@ -187,34 +187,15 @@ function set_svn_branch {
     BRANCH="${WHITE}on ${state}${branch}${remote}${RESET} "
 }
 
-# Return the prompt symbol to use, colorized based on the return value of the
-# previous command.
-function set_prompt_symbol () {
-    # if test $1 -eq 0 ; then
-    PROMPT_SYMBOL="\$"
-    # else
-    #     PROMPT_SYMBOL="${RED}\$${RESET}"
-    # fi
-}
-
-# Set the full bash prompt.
-function set_bash_prompt () {
-    # Set the PROMPT_SYMBOL variable. We do this first so we don't lose the
-    # return value of the last command.
-    set_prompt_symbol $?
-
-    # Set the BRANCH variable.
-    if is_git_repository ; then
-        set_git_branch
-    elif is_svn_repository ; then
-        set_svn_branch
-    else
-        BRANCH=''
-    fi
-
-    # Set the bash prompt variable.
-    PS1="${BOLD}${RED}\u${WHITE} @ ${ORANGE}\h${WHITE} in ${PURPLE}\w ${BRANCH} ${RESET}\n${PROMPT_SYMBOL} "
-}
+# Set the BRANCH variable.
+if is_git_repository ; then
+    set_git_branch
+elif is_svn_repository ; then
+    set_svn_branch
+else
+    BRANCH=''
+fi
 
 # Tell bash to execute this function just before displaying its prompt.
-PROMPT_COMMAND=set_bash_prompt
+export PS1="${BOLD}${RED}\u${WHITE} @ ${ORANGE}\h${WHITE} in ${PURPLE}\w ${BRANCH} ${RESET}\n\$ "
+export PS2="\[$ORANGE\]→ \[$RESET\]"
