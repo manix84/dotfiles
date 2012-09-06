@@ -111,6 +111,10 @@ alias plistbuddy="/usr/libexec/PlistBuddy"
 # (useful when executing time-consuming commands)
 alias badge="tput bel"
 
+# A beefier clear screen command. Easier to see when scolling.
+alias clear="for((i=1;i<=$(tput lines);i++));do printf '%s' '
+';done; clear"
+
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 	alias "$method"="lwp-request -m '$method'"
