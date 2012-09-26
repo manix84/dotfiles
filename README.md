@@ -27,7 +27,7 @@ Alternatively, to update while avoiding the confirmation prompt:
 To install these dotfiles without Git:
 
 ```bash
-cd; curl -#Lk https://github.com/manix84/dotfiles/tarball/master | tar -xzv --strip-components 1 --exclude={README.md,bootstrap.sh}
+cd; curl -#Lk https://github.com/manix84/dotfiles/tarball/work-linux | tar -xzv --strip-components 1 --exclude={README.md}
 ```
 
 To update later on, just run that command again.
