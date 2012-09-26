@@ -2,10 +2,17 @@ echo '
 for s in /opt/internal/dev/utils/profile.d/*.sh; do
     if [ -r "$s" ]
     then
+<<<<<<< HEAD
 	. $s
     else
 	echo "Could not load $s"
 	echo "please confirm with a system administrator this server has been configured correctly."
+=======
+        . $s
+    else
+        echo "Could not load $s"
+        echo "please confirm with a system administrator this server has been configured correctly."
+>>>>>>> 9f9ef355d7f702d35010e0d6d71e039252776ada
     fi
 done
 ' | tee -a ~/.zshrc >> ~/.bashrc
