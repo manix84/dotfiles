@@ -2,10 +2,17 @@ echo '
 for s in /opt/internal/dev/utils/profile.d/*.sh; do
     if [ -r "$s" ]
     then
+<<<<<<< HEAD
         . $s
     else
         echo "Could not load $s"
         echo "please confirm with a system administrator this server has been configured correctly."
+=======
+	. $s
+    else
+	echo "Could not load $s"
+	echo "please confirm with a system administrator this server has been configured correctly."
+>>>>>>> Adding work envwq variables
     fi
 done
 ' | tee -a ~/.zshrc >> ~/.bashrc
@@ -13,5 +20,10 @@ done
 export PATH=$PATH:/opt/internal/dev/bin:/apollo/env/SDETools/bin:/apollo/env/WebDevTools/bin
 export LF_USER=robtay
 export PROJECT=robtay-amz
+<<<<<<< HEAD
 export PERL5LIB=$PERL5LIB:/workplace/$PROJECT/src/opt:/apollo/env/LovefilmEaaS/opt
 export ANY_MOOSE=Moose
+=======
+export PERL5LIB=$PERL5LIB:/workplace/$PROJECT/src/opt
+export ANY_MOOSE=Moose
+>>>>>>> Adding work envwq variables
