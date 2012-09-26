@@ -13,5 +13,5 @@ done
 export PATH=$PATH:/opt/internal/dev/bin:/apollo/env/SDETools/bin:/apollo/env/WebDevTools/bin
 export LF_USER=robtay
 export PROJECT=robtay-amz
-export PERL5LIB=$PERL5LIB:/workplace/$PROJECT/src/opt
+export PERL5LIB=$PERL5LIB:/workplace/$PROJECT/src/opt:/apollo/env/LovefilmEaaS/opt
 export ANY_MOOSE=Moose
