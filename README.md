@@ -1,4 +1,4 @@
-# Mathias’s dotfiles
+# Manix’s dotfiles
 
 ## Installation
 
@@ -27,14 +27,14 @@ Alternatively, to update while avoiding the confirmation prompt:
 To install these dotfiles without Git:
 
 ```bash
-cd; curl -#L https://github.com/manix84/dotfiles/tarball/master | tar -xzv --strip-components 1 --exclude={README.md,bootstrap.sh}
+cd; curl -#Lk https://github.com/manix84/dotfiles/tarball/master | tar -xzv --strip-components 1 --exclude={README.md,bootstrap.sh}
 ```
 
 To update later on, just run that command again.
 
 ### Specify the `$PATH`
 
-If `~/.path` exists, it will be sourced along with the other files, before any feature testing (such as [detecting which version of `ls` is being used](https://github.com/mathiasbynens/dotfiles/blob/aff769fd75225d8f2e481185a71d5e05b76002dc/.aliases#L21-26)) takes place.
+If `~/.path` exists, it will be sourced along with the other files, before any feature testing (such as [detecting which version of `ls` is being used](https://github.com/manix84/dotfiles/blob/aff769fd75225d8f2e481185a71d5e05b76002dc/.aliases#L21-26)) takes place.
 
 Here’s an example `~/.path` file that adds `~/utils` to the `$PATH`:
 
@@ -62,7 +62,7 @@ GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 git config --global user.email "$GIT_AUTHOR_EMAIL"
 ```
 
-You could also use `~/.extra` to override settings, functions and aliases from my dotfiles repository. It’s probably better to [fork this repository](https://github.com/mathiasbynens/dotfiles/fork_select) instead, though.
+You could also use `~/.extra` to override settings, functions and aliases from my dotfiles repository. It’s probably better to [fork this repository](https://github.com/manix84/dotfiles/fork_select) instead, though.
 
 ### Sensible OS X defaults
 
@@ -85,8 +85,9 @@ When setting up a new Mac, you may want to install some common Homebrew formulae
 Suggestions/improvements
 [welcome](https://github.com/manix84/dotfiles/issues)!
 
-## Thanks to…
+## Contributions…
 
+* [Mathias Bynens - Original DotFile Repo](https://github.com/mathiasbynens/dotfiles)!
 * [Gianni Chiappetta](http://gf3.ca/) for sharing his [amazing collection of dotfiles](https://github.com/gf3/dotfiles)
 * [Matijs Brinkhuis](http://hotfusion.nl/) and his [dotfiles repository](https://github.com/matijs/dotfiles)
 * [Jan Moesen](http://jan.moesen.nu/) and his [ancient `.bash_profile`](https://gist.github.com/1156154) + [shiny _tilde_ repository](https://github.com/janmoesen/tilde)
