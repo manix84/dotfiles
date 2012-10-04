@@ -85,9 +85,9 @@ When setting up a new Mac, you may want to install some common Homebrew formulae
 Suggestions/improvements
 [welcome](https://github.com/manix84/dotfiles/issues)!
 
-## The original dot files can be found here…
+## Contributions…
 
-* [Mathias Bynens](https://github.com/mathiasbynens/dotfiles)!
+* [Mathias Bynens - Original DotFile Repo](https://github.com/mathiasbynens/dotfiles)!
 * [Gianni Chiappetta](http://gf3.ca/) for sharing his [amazing collection of dotfiles](https://github.com/gf3/dotfiles)
 * [Matijs Brinkhuis](http://hotfusion.nl/) and his [dotfiles repository](https://github.com/matijs/dotfiles)
 * [Jan Moesen](http://jan.moesen.nu/) and his [ancient `.bash_profile`](https://gist.github.com/1156154) + [shiny _tilde_ repository](https://github.com/janmoesen/tilde)

@@ -39,10 +39,11 @@
 #   Screenshot: http://i.imgur.com/s0Blh.png
 
 if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
-	export TERM=gnome-256color
+    export TERM=gnome-256color
 elif infocmp xterm-256color >/dev/null 2>&1; then
-	export TERM=xterm-256color
+    export TERM=xterm-256color
 fi
+
 
 if tput setaf 1 &> /dev/null; then
 	tput sgr0
@@ -74,7 +75,7 @@ else
 	RESET="\033[m"
 fi
 
-export MAGENTA
+export RED
 export ORANGE
 export GREEN
 export YELLOW
