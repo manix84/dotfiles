@@ -46,33 +46,33 @@ fi
 
 
 if tput setaf 1 &> /dev/null; then
-	tput sgr0
-	if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
-		MAGENTA=$(tput setaf 9)
-		ORANGE=$(tput setaf 172)
-		GREEN=$(tput setaf 82)
-		YELLOW=$(tput setaf 226)
-		PURPLE=$(tput setaf 141)
-		WHITE=$(tput setaf 256)
-	else
-		MAGENTA=$(tput setaf 5)
-		ORANGE=$(tput setaf 4)
-		GREEN=$(tput setaf 2)
-		YELLOW=$(tput setaf 3)
-		PURPLE=$(tput setaf 1)
-		WHITE=$(tput setaf 7)
-	fi
-	BOLD=$(tput bold)
-	RESET=$(tput sgr0)
+    tput sgr0
+    if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
+        MAGENTA=$(tput setaf 9)
+        ORANGE=$(tput setaf 172)
+        GREEN=$(tput setaf 82)
+        YELLOW=$(tput setaf 226)
+        PURPLE=$(tput setaf 141)
+        WHITE=$(tput setaf 256)
+    else
+        MAGENTA=$(tput setaf 5)
+        ORANGE=$(tput setaf 4)
+        GREEN=$(tput setaf 2)
+        YELLOW=$(tput setaf 3)
+        PURPLE=$(tput setaf 1)
+        WHITE=$(tput setaf 7)
+    fi
+    BOLD=$(tput bold)
+    RESET=$(tput sgr0)
 else
-	MAGENTA="\033[1;31m"
-	ORANGE="\033[1;33m"
-	GREEN="\033[1;32m"
-	YELLOW="\033[1;32m"
-	PURPLE="\033[1;35m"
-	WHITE="\033[1;37m"
-	BOLD=""
-	RESET="\033[m"
+    MAGENTA="\033[1;31m"
+    ORANGE="\033[1;33m"
+    GREEN="\033[1;32m"
+    YELLOW="\033[1;32m"
+    PURPLE="\033[1;35m"
+    WHITE="\033[1;37m"
+    BOLD=""
+    RESET="\033[m"
 fi
 
 export RED
@@ -86,53 +86,98 @@ export RESET
 
 # Detect whether the current directory is a git repository.
 function is_git_repository {
-	git branch > /dev/null 2>&1
+    git branch > /dev/null 2>&1
+}
+
+# Detect whether the current directory is a subversion repository.
+function is_svn_repository {
+    test -d .svn
 }
 
 # Determine the branch/state information for this git repository.
 function get_git_branch_name() {
-	# Capture the output of the "git status" command.
-	git_status="$(git status 2> /dev/null)"
+    # Capture the output of the "git status" command.
+    git_status="$(git status 2> /dev/null)"
 
-	# Set color based on clean/staged/dirty.
-	if [[ ${git_status} =~ "working directory clean" ]]; then
-		local_state="${GREEN}"
-	elif [[ ${git_status} =~ "Changes to be committed" ]]; then
-		local_state="${YELLOW}"
-	else
-		local_state="${MAGENTA}"
-	fi
+    # Set color based on clean/staged/dirty.
+    if [[ ${git_status} =~ "working directory clean" ]]; then
+        local_state="${GREEN}"
+    elif [[ ${git_status} =~ "Changes to be committed" ]]; then
+        local_state="${YELLOW}"
+    else
+        local_state="${MAGENTA}"
+    fi
 
-	# Set arrow icon based on status against remote.
-	remote_pattern="# Your branch is (.*) of"
-	if [[ ${git_status} =~ ${remote_pattern} ]]; then
-		if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
-			remote_state="[↑]"
-		else
-			remote_state="[↓]"
-		fi
-	else
-		remote_state=""
-	fi
-	diverge_pattern="# Your branch and (.*) have diverged"
-	if [[ ${git_status} =~ ${diverge_pattern} ]]; then
-		remote_state="[↕]"
-	fi
+    # Set arrow icon based on status against remote.
+    remote_pattern="# Your branch is (.*) of"
+    if [[ ${git_status} =~ ${remote_pattern} ]]; then
+        if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
+            remote_state="[↑]"
+        else
+            remote_state="[↓]"
+        fi
+    else
+        remote_state=""
+    fi
+    diverge_pattern="# Your branch and (.*) have diverged"
+    if [[ ${git_status} =~ ${diverge_pattern} ]]; then
+        remote_state="[↕]"
+    fi
 
-	# Get the name of the branch.
-	branch_pattern="^# On branch ([^${IFS}]*)"
-	if [[ ${git_status} =~ ${branch_pattern} ]]; then
-		branch_name=${BASH_REMATCH[1]}
-	fi
+    # Get the name of the branch.
+    branch_pattern="^# On branch ([^${IFS}]*)"
+    if [[ ${git_status} =~ ${branch_pattern} ]]; then
+        branch_name=${BASH_REMATCH[1]}
+    fi
 
-	# Set the final branch string.
-	echo "${WHITE} on ${local_state}${branch_name}${remote_state} "
+    # Set the final branch string.
+    echo "${WHITE} on ${local_state}${branch_name}${remote_state} "
 }
+
+
+
+# Determine the branch information for this subversion repository. No support
+# for svn status, since that needs to hit the remote repository.
+function get_svn_branch_name {
+    # svn_base_rev="$(svn info | grep -i 'Last Changed Rev')"
+    # svn_head_rev="$(svn info -r HEAD | grep -i 'Last Changed Rev')"
+
+    # # Set color based on clean/dirty.
+    svn_status=$(svn status | grep -oP '^([\?\*\!CMAD]{0,6})' | sort | uniq | tr -d '\n' 2> /dev/null)
+
+    if [[ ${svn_status} ]]; then
+        remote=" [${svn_status}]"
+        if [[ ${svn_status} =~ (\!|C) ]]; then
+            state="${RED}"
+        elif [[ ${svn_status} =~ (\*|M|A|D) ]]; then
+            state="${YELLOW}"
+        elif [[ ${svn_status} =~ (\?|I) ]]; then
+            state="${GREEN}"
+        fi
+    fi
+
+    svn_info="$(svn info | egrep '^URL: ' 2> /dev/null)"
+
+    # Get the name of the branch.
+    branch_pattern="^URL: .*/(branches|tags)/([^/]+)"
+    branch='trunk'
+    # if [[ ${svn_info} =~ $branch_pattern ]]; then
+    #     branch=${BASH_REMATCH[2]}
+    #     # state=${YELLOW}
+    # fi
+
+    # Set the final branch string.
+    echo "${WHITE} on ${state}${branch}${remote}${RESET} "
+}
+
+
 function get_branch_name() {
-	if is_git_repository ; then
-		echo $(get_git_branch_name)
-	fi
-	echo ""
+    if is_git_repository ; then
+        echo $(get_git_branch_name)
+    elif is_svn_repository ; then
+        echo $(get_svn_branch_name)
+    fi
+    echo ""
 }
 export PS1="\[${BOLD}${MAGENTA}\]\u \[$WHITE\]at \[$ORANGE\]\H \[$WHITE\]in \[$PURPLE\]\w\$(get_branch_name)\n\[$RESET\]\$ "
 export PS2="\[$ORANGE\]→ \[$RESET\]"
