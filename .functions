@@ -147,12 +147,14 @@ function unquarantine() {
 
 # Usage: mount_ssh your_username@some.server.com:/path/to/file
 function mount_ssh() {
-    if [ -z "$1" ]; then
+    connection_pattern="((.*)@)?(.*)(:(.*))?"
+    if [[ -n "$1" && $1 =~ ${connection_pattern} ]]; then
+        remoteHost=${BASH_REMATCH[3]}
+        friendlyName=`expr "$remoteHost" : '\([0-9A-Za-z_-]\{1,30\}\)'`
+    else
         echo "A host name is required"
         return
     fi
-    remoteHost=`expr "$1" : '\(.*\):.*'`
-    friendlyName=`expr "$remoteHost" : '\([0-9A-Za-z_-]\{1,30\}\)'`
 
     directoryName=/Volumes/${friendlyName}
     volumeName="${friendlyName} (SSHFS)"
@@ -161,15 +163,12 @@ function mount_ssh() {
         read -p "\"${directoryName}\" already exists. Would you like to remount it? [y/N]: " yn
         case $yn in
             [Yy]* )
-                if [ test "${PWD##$directoryName}" == "${PWD}" ]; then
-                    cd /Volumes/
-                fi
-                umount ${directoryName};;
+                cd /Volumes/
+                umount -f ${directoryName};;
             * ) echo "Exiting..."; return;;
         esac
-    else
-        mkdir -p /Volumes/${friendlyName}
     fi
+    mkdir -p /Volumes/${friendlyName}
 
     sshfs ${1} ${directoryName} -o transform_symlinks,compression=yes,volname="${volumeName}" &&
     cd ${directoryName} &&
