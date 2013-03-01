@@ -52,7 +52,7 @@ if tput setaf 1 &> /dev/null; then
 		GREEN=$(tput setaf 82)
 		YELLOW=$(tput setaf 226)
 		PURPLE=$(tput setaf 141)
-		WHITE=$(tput setaf 256)
+		WHITE=$(tput setaf 255)
 	else
 		MAGENTA=$(tput setaf 5)
 		ORANGE=$(tput setaf 4)
