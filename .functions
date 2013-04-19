@@ -145,34 +145,47 @@ function unquarantine() {
 	done
 }
 
-# Usage: mount_ssh your_username@some.server.com:/path/to/file
+# Usage: mount_ssh [your_username@]some.server.com:/path/to/mount [serverName]
 function mount_ssh() {
-    connection_pattern="((.*)@)?(.*)(:(.*))?"
-    if [[ -n "$1" && $1 =~ ${connection_pattern} ]]; then
+    # Auto requesting sudo access as it is required for the creation and alteration of the Network folder.
+    sudo -v
+
+    local connectionPattern="((.*)@)?(.*)(:(.*))?"
+    local remoteHost
+    local friendlyName
+    if [[ -n "${1}" && ${1} =~ ${connectionPattern} ]]; then
         remoteHost=${BASH_REMATCH[3]}
-        friendlyName=`expr "$remoteHost" : '\([0-9A-Za-z_-]\{1,30\}\)'`
+        friendlyName=`expr "${remoteHost}" : '\([0-9A-Za-z_-]\{1,30\}\)'`
     else
         echo "A host name is required"
         return
     fi
 
-    directoryName=/Volumes/${friendlyName}
-    volumeName="${friendlyName} (SSHFS)"
+    local directoryName=/Network/${friendlyName}
+    local volumeName="${friendlyName} (SSHFS)"
+    if [[ -n "${2}" ]]; then
+        local volumeName=${2}
+    fi
 
-    if [ -d $directoryName ]; then
+    if [ -d ${directoryName} ]; then
         read -p "\"${directoryName}\" already exists. Would you like to remount it? [y/N]: " yn
         case $yn in
             [Yy]* )
-                cd /Volumes/
-                umount -f ${directoryName};;
+                cd
+                sudo umount -f ${directoryName};;
             * ) echo "Exiting..."; return;;
         esac
     fi
-    mkdir -p /Volumes/${friendlyName}
 
-    sshfs ${1} ${directoryName} -o transform_symlinks,compression=yes,volname="${volumeName}" &&
-    cd ${directoryName} &&
-    echo "${remoteHost} mounted to ${directoryName}, named \"${volumeName}\"" &&
+    # An ugly chain of dependant commands. If the command previous to each fails, something has gone
+    #   wrong and we need to stop.
+    sudo mkdir -p ${directoryName} &&
+        chown ${USER} ${directoryName} &&
+        chmod 0755 ${directoryName} &&
+
+        sshfs ${1} ${directoryName} -o transform_symlinks,compression=yes,volname="${volumeName}" &&
+        cd ${directoryName} &&
+        echo "${remoteHost} mounted to ${directoryName}, named \"${volumeName}\"" &&
     return
 
     echo "${remoteHost} failed to mount."
