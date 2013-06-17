@@ -93,14 +93,14 @@ function get_git_branch_name() {
 	# Capture the output of the "git status" command.
 	git_status="$(git status 2> /dev/null)"
 
-	# Set color based on clean/staged/dirty.
-	if [[ ${git_status} =~ "working directory clean" ]]; then
-		local_state="${GREEN}"
-	elif [[ ${git_status} =~ "Changes to be committed" ]]; then
-		local_state="${YELLOW}"
-	else
-		local_state="${MAGENTA}"
-	fi
+    # Set color based on clean/staged/dirty.
+    if [[ ${git_status} =~ "Changes not staged for commit" ]]; then
+        local_state="${MAGENTA}"
+    elif [[ ${git_status} =~ "Changes to be committed" ]]; then
+        local_state="${YELLOW}"
+    else
+        local_state="${GREEN}"
+    fi
 
 	# Set arrow icon based on status against remote.
 	remote_pattern="# Your branch is (.*) of"
