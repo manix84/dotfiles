@@ -82,6 +82,7 @@ alias c="tr -d '\n' | pbcopy"
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 
+# Clear the screen by adding the terminal height in white space and running "clear". A nice gap appears :).
 alias clear="for((i=1;i<=$(tput lines);i++));do printf '%s' '
 ';done; clear"
 
@@ -129,7 +130,6 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 done
 
 # Enchanced find in files
-alias grok='find . -type f -not -path "*git*" -not -path "*CVS*" -not -path "*svn*" -not -path "*/tmp/*" -print0 | xargs -0 grep '
 alias sgrep='find . -type f -not -path "*git*" -not -path "*CVS*" -not -path "*svn*" -not -path "*/tmp/*" -not -path "*/images/*" -print0 | xargs -0 grep '
 
 # Stuff I never really use but cannot delete either because of http://xkcd.com/530/
