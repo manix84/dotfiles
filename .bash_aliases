@@ -7,16 +7,10 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # Shortcuts
-alias d="cd ~/Documents/Dropbox"
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-alias p="cd ~/Projects"
-alias w="cd ~/Workspace"
 alias g="git"
 alias h="history"
 alias j="jobs"
 alias v="vim"
-alias subl='open -a "Sublime Text 2"'
 alias o="open"
 alias oo="open ."
 
