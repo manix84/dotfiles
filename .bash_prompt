@@ -192,5 +192,42 @@ function get_branch_name() {
     fi
     echo ""
 }
-export PS1="\[${BOLD}${RED}\]\u \[${WHITE}\]at \[${ORANGE}\]\H \[${WHITE}\]in \[${PURPLE}\]\w\$(get_branch_name)\n\[${RESET}\]\$ "
-export PS2="\[${ORANGE}\]→ \[${RESET}\]"
+function constructPS1 {
+    local PS1String=""
+    local show_user=true
+    local show_host=true
+    local show_directory=true
+    local show_git=true
+    if [[ show_user ]]; then
+        PS1String="${PS1String}${BOLD}${DARK_RED}\u "
+    fi
+    if [[ show_host ]]; then
+        if [[ PS1String ]]; then
+            PS1String="${PS1String}${RESET}on "
+        fi
+        PS1String="${PS1String}${BOLD}${ORANGE}\H "
+    fi
+    if [[ show_directory ]]; then
+        if [[ PS1String ]]; then
+            PS1String="${PS1String}${RESET}at "
+        fi
+        PS1String="${PS1String}${BOLD}${DARK_BLUE}\A "
+    fi
+    if [[ show_directory ]]; then
+        if [[ PS1String ]]; then
+            PS1String="${PS1String}${RESET}in "
+        fi
+        PS1String="${PS1String}${BOLD}${PURPLE}\w"
+    fi
+    if [[ show_git ]]; then
+        if [[ PS1String ]]; then
+            PS1String="${PS1String}${RESET}on "
+        fi
+        PS1String="${PS1String}${BOLD}$(get_branch_name)"
+    fi
+    PS1String="\n${PS1String}${RESET}\$ "
+
+    echo ${PS1String}
+}
+export PS1=$(constructPS1)
+export PS2="[${ORANGE}]→ [${RESET}]"
