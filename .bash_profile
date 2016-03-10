@@ -7,7 +7,7 @@ export PATH="$HOME/.bin:$PATH"
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{path,bash_prompt,bash_exports,bash_aliases,bash_functions,bash_osx,bash_unix,bash_extra}; do
+for file in ~/.bash_{path,prompt,exports,aliases,functions,osx,unix,extra}; do
     [ -r "$file" ] && source "$file"
 done
 unset file
