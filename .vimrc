@@ -95,6 +95,15 @@ set laststatus=2
 " Enable mouse in all modes
 set mouse=a
 
+" Mapping scroll-wheel events
+map <ScrollWheelUp> <C-Y>
+map <S-ScrollWheelUp> <C-U>
+map <ScrollWheelDown> <C-E>
+map <S-ScrollWheelDown> <C-D>
+
+" Clear vim window after quit
+au VimLeave * :!clear
+
 " Disable error bells
 set noerrorbells
 
