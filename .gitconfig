@@ -98,6 +98,5 @@
 [url "git://gist.github.com/"]
   insteadOf = "gist:"
 
-
 [help]
-	autocorrect = 10
+  autocorrect = 10
