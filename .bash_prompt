@@ -126,28 +126,33 @@ function is_git_repository {
 # Determine the branch/state information for this git repository.
 function get_git_branch_name() {
     # Capture the output of the "git status" command.
-    local git_status="$(git status 2> /dev/null)"
+    local git_status="$(git -c color.status=false status 2> /dev/null)"
+
+    local branch_name="???"
     local joiner="on"
     local extra=""
 
     # Get the name of the branch.
-    local branch_name_pattern="On branch ([a-zA-Z0-9\-]+)"
-    local branch_name="???"
+    local branch_name_pattern="On branch ([^[:space:]]+)"
+    local detached_pattern="([0-9a-zA-Z]+) detached at ([0-9a-zA-Z]+)"
+    local rebase_pattern="rebasing branch '([^[:space:]]+)' on '([^[:space:]]+)'"
+
     if [[ ${git_status} =~ ${branch_name_pattern} ]]; then
         branch_name=${BASH_REMATCH[1]}
+    elif [[ ${git_status} =~ ${detached_pattern} ]]; then
+        branch_name=${BASH_REMATCH[1]}
+        joiner="detached from"
+        extra="(${BASH_REMATCH[2]})"
+    elif [[ ${git_status} =~ ${rebase_pattern} ]]; then
+        branch_name=${BASH_REMATCH[1]}
+        joiner="rebasing"
+        extra="(${BASH_REMATCH[2]})"
     fi
 
     local branch_remote_pattern="with 'origin/"
     local is_remote_branch=false
     if [[ ${git_status} =~ ${branch_remote_pattern} ]]; then
         is_remote_branch=true
-    fi
-
-    local rebase_pattern="rebasing branch '([a-zA-Z0-9\-\.]+)' on '([0-9]+)'"
-    if [[ ${git_status} =~ ${rebase_pattern} ]]; then
-        branch_name=${BASH_REMATCH[1]}
-        joiner="rebasing"
-        extra="(${BASH_REMATCH[2]})"
     fi
 
     local cherry_pick_pattern="cherry-picking commit ([0-9a-z]+)"
