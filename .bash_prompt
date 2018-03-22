@@ -82,41 +82,52 @@ else
     DARK_CYAN="\033[2;36m"
     GREY="\033[37m"
     DARK_GREY="\033[2;37m"
-    RED="\033[1;31m"
-    GREEN="\033[1;32m"
-    YELLOW="\033[1;33m"
-    BLUE="\033[1;34m"
-    MAGENTA="\033[1;35m"
-    CYAN="\033[1;36m"
-    WHITE="\033[1;37m"
+    RED="\033[0;31m"
+    GREEN="\033[0;32m"
+    YELLOW="\033[0;33m"
+    BLUE="\033[0;34m"
+    MAGENTA="\033[0;35m"
+    CYAN="\033[0;36m"
+    WHITE="\033[0;37m"
 
     ORANGE="\033[2;33m"
-    PURPLE="\033[1;35m"
+    PURPLE="\033[0;35m"
 
-    BOLD=""
+    BOLD="\033[1m"
     RESET="\033[m"
 fi
 
-export BLACK
-export DARK_RED
-export DARK_GREEN
-export DARK_YELLOW
-export DARK_BLUE
-export DARK_MAGENTA
-export DARK_CYAN
-export GREY
-export DARK_GREY
-export RED
-export GREEN
-export YELLOW
-export BLUE
-export MAGENTA
-export CYAN
-export WHITE
-export ORANGE
-export PURPLE
-export BOLD
-export RESET
+C=${CYAN}
+M=${MAGENTA}
+Y=${YELLOW}
+K=${BLACK}
+R=${RED}
+B=${BLUE}
+G=${GREEN}
+W=${WHITE}
+RST=${RESET}
+BLD=${BOLD}
+
+# export BLACK
+# export DARK_RED
+# export DARK_GREEN
+# export DARK_YELLOW
+# export DARK_BLUE
+# export DARK_MAGENTA
+# export DARK_CYAN
+# export GREY
+# export DARK_GREY
+# export RED
+# export GREEN
+# export YELLOW
+# export BLUE
+# export MAGENTA
+# export CYAN
+# export WHITE
+# export ORANGE
+# export PURPLE
+# export BOLD
+# export RESET
 
 # Detect whether the current directory is a git repository.
 function is_git_repository {
@@ -134,14 +145,14 @@ function get_git_branch_name() {
 
     # Get the name of the branch.
     local branch_name_pattern="On branch ([^[:space:]]+)"
-    local detached_pattern="([0-9a-zA-Z]+) detached at ([0-9a-zA-Z]+)"
+    local detatched_pattern="([0-9a-zA-Z]+) detached at ([0-9a-zA-Z]+)"
     local rebase_pattern="rebasing branch '([^[:space:]]+)' on '([^[:space:]]+)'"
 
     if [[ ${git_status} =~ ${branch_name_pattern} ]]; then
         branch_name=${BASH_REMATCH[1]}
-    elif [[ ${git_status} =~ ${detached_pattern} ]]; then
+    elif [[ ${git_status} =~ ${detatched_pattern} ]]; then
         branch_name=${BASH_REMATCH[1]}
-        joiner="detached from"
+        joiner="detatched from"
         extra="(${BASH_REMATCH[2]})"
     elif [[ ${git_status} =~ ${rebase_pattern} ]]; then
         branch_name=${BASH_REMATCH[1]}
@@ -162,11 +173,11 @@ function get_git_branch_name() {
     fi
 
     # Set color based on clean/staged/dirty
-    local git_state_indicator="${GREEN}"
+    local git_state_indicator="${G}"
     if [[ ${git_status} =~ "Changes not staged for commit" ]]; then
-        git_state_indicator="${RED}"
+        git_state_indicator="${R}"
     elif [[ ${git_status} =~ "Changes to be committed" ]]; then
-        git_state_indicator="${YELLOW}"
+        git_state_indicator="${Y}"
     fi
 
     # Set arrow icon based on status against remote.
@@ -185,11 +196,11 @@ function get_git_branch_name() {
             remote_state="[↕]"
         fi
     else
-        remote_state="${RED}[L]"
+        remote_state="${R}[L]"
     fi
 
     # Set the final branch string.
-    echo "${RESET} ${joiner} ${git_state_indicator}${branch_name}${remote_state}${RESET} ${extra}"
+    echo "${RST} ${joiner} ${git_state_indicator}${branch_name}${remote_state}${RST} ${extra}"
 }
 function get_branch_name() {
     if is_git_repository ; then
@@ -197,5 +208,5 @@ function get_branch_name() {
     fi
     echo ""
 }
-export PS1="\[${BOLD}${RED}\]\u \[${WHITE}\]at \[${ORANGE}\]\H \[${WHITE}\]in \[${PURPLE}\]\w\$(get_branch_name)\n\[${RESET}\]\$ "
-export PS2="\[${ORANGE}\]→ \[${RESET}\]"
+export PS1="${BLD}${R}\u ${RST}at ${BLD}${ORANGE}\H ${RST}in ${BLD}${PURPLE}\w$(get_branch_name)\n${RST}\$ "
+export PS2="${ORANGE}→${RST} "
