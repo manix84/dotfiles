@@ -1,4 +1,4 @@
-# Manix’s dotfiles
+# Manix’s BASH DotFiles
 
 ## Installation
 
@@ -7,10 +7,10 @@
 You can clone the repository wherever you want. (I like to keep it in `~/Projects/dotfiles`, with `~/dotfiles` as a symlink.) The bootstrapper script will pull in the latest version and copy the files to your home folder.
 
 ```bash
-git clone https://github.com/manix84/dotfiles.git && cd dotfiles && ./bootstrap.sh
+git clone https://github.com/manix84/dotfiles_bash.git && cd dotfiles_bash && ./bootstrap.sh
 ```
 
-To update, `cd` into your local `dotfiles` repository and then:
+To update, `cd` into your local `dotfiles_bash` repository and then:
 
 ```bash
 ./bootstrap.sh
@@ -27,7 +27,7 @@ Alternatively, to update while avoiding the confirmation prompt:
 To install these dotfiles without Git:
 
 ```bash
-cd; curl -#Lk https://github.com/manix84/dotfiles/tarball/master | tar -xzv --strip-components 1 --exclude={README.md,bootstrap.sh}
+cd; curl -#Lk https://github.com/manix84/dotfiles_bash/tarball/master | tar -xzv --strip-components 1 --exclude={README.md,bootstrap.sh}
 ```
 
 To update later on, just run that command again.
@@ -83,7 +83,7 @@ When setting up a new Mac, you may want to install some common Homebrew formulae
 ## Feedback
 
 Suggestions/improvements
-[welcome](https://github.com/manix84/dotfiles/issues)!
+[welcome](https://github.com/manix84/dotfiles_bash/issues)!
 
 ## Contributions…
 
