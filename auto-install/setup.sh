@@ -18,14 +18,3 @@ was written for this script.
 - Manix84 -
 
 DISCLAIMER
-
-// Find out downloader
-
-// Change shell to ZSH
-chsh -s $(which zsh)
-
-// Install OhMyZSH
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-// Install OhMyZSH-BulletTrain
-wget --output-file=$ZSH_CUSTOM/themes/bullet-train.zsh-theme http://raw.github.com/caiogondim/bullet-train-oh-my-zsh-theme/master/bullet-train.zsh-theme
